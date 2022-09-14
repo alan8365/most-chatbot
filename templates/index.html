@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <title>Chat-bot</title>
+
+    <style>
+        body {
+            background-color: #eff8fe;
+            /* height: 100vh; */
+            /* width: 100vw; */
+        }
+        
+        #input-field {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            border: none;
+            /* <-- This thing here */
+            border: solid 1px #727171;
+            border-radius: 50px;
+        }
+        
+        #input-row {
+            height: 33vh;
+            border-top: dotted #727171;
+        }
+        
+        #input-row>.row>div {
+            height: 65px;
+        }
+        
+        body>.row {
+            position: relative;
+            height: 33%;
+        }
+        
+        #robots {
+            height: 30vh;
+        }
+        
+        #robots>.col,
+        #robots img {
+            max-height: 100%;
+        }
+        
+        #robots>.col {
+            position: relative;
+            height: 420px;
+        }
+        
+        #robots img {
+            position: absolute;
+            bottom: 0;
+        }
+        
+        #input-row input,
+        #input-row button {
+            width: 100%;
+        }
+        
+        #chat-bubbles {
+            margin-top: 10vh;
+            height: 150px;
+        }
+        
+        #chat-bubbles img,
+        #chat-bubbles div {
+            height: 100%;
+        }
+        
+        .text-centered {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            padding: 20px;
+            font-size: 30px;
+            font-weight: 800;
+        }
+        
+        #chat-bubbles>.col>div {
+            position: relative;
+            display: inline-block;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="chat-bubbles" class="row">
+            <div class="col">
+                <div>
+                    <img src="../static/SVG/TALK.svg" alt="">
+                    <p class='text-centered'>點我詢問有關老人照護中心</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <div>
+                    <img src="../static/SVG/TALK.svg" alt="">
+                    <p class='text-centered'>點我詢問XX寵物店</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <div>
+                    <img src="../static/SVG/TALK.svg" alt="">
+                    <p class='text-centered'>點我詢問有關台中科技大學</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="robots">
+            <div class="col">
+                <img src="../static/SVG/ROBOT1.svg" align="bottom" alt="">
+            </div>
+
+            <div class="col">
+                <img src="../static/SVG/ROBOT2.svg" alt="">
+            </div>
+
+            <div class="col">
+                <img src="../static/SVG/ROBOT3.svg" alt="">
+            </div>
+        </div>
+
+        <div class="row" id="input-row">
+            <form class="row align-items-center invisible" action="" method="POST">
+                <div class="col-11">
+                    <input type="text" name="message" id="input-field">
+                </div>
+
+                <div class="col-1">
+                    <button type="submit" style="border: 0; background: transparent">
+                    <img src="../static/SVG/SURE.svg" alt="submit" />
+                </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script id="socket-io-script" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.min.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+            socket.emit('init-connect', {
+                data: 'User Connected'
+            })
+
+            var form = $('form').on('submit', function(e) {
+                e.preventDefault()
+                    // let user_name = $('input.username').val()
+                let user_name = 'aaa123'
+                let user_input = $('input.message').val()
+
+                socket.emit('rasa', {
+                    project: 'shou',
+                    user_name: user_name,
+                    message: user_input,
+                })
+
+                $('input.message').val('').focus()
+            })
+        })
+
+        socket.on('rasa-response', function(msg) {
+            console.log(msg)
+            if (typeof msg.user_name !== 'undefined') {
+                $('h3').remove()
+                $('div.message_holder').append('<div><b style="color:             #000">' + '機器人' + ':' + msg + '</div>')
+            }
+        })
+    </script>
+</body>
+
+</html>
