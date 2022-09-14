@@ -34,16 +34,16 @@ def chat_room():
     return render_template('chat.html')
 
 
-@app.route('/rasa')
-def rasa():
-    body = {
-        "sender": "Lucy",
-        "message": "老人照護"
-    }
-    a = requests.post(rasa_url, body)
-    print(a.content)
+# @app.route('/rasa')
+# def rasa():
+#     body = {
+#         "sender": "Lucy",
+#         "message": "老人照護"
+#     }
+#     a = requests.post(rasa_url, body)
+#     print(a.content)
 
-    return a.content
+#     return a.content
 
 
 @app.route('/callback/<string:project>', methods=["POST"])
