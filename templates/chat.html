@@ -162,16 +162,8 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script id="socket-io-script" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.min.js"></script>
     <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-        socket.on('connect', function() {
-            socket.emit('init-connect', {
-                data: 'User Connected'
-            })
-
-            var form = $('form').on('submit', function(e) {
+        var form = $('form').on('submit', function(e) {
                 e.preventDefault()
                 let user_name = 'aaa123'
                 let user_input = $('#message').val()
@@ -183,18 +175,23 @@
                 }
                 console.log(request_content)
 
-                socket.emit('rasa', request_content)
+                url = 'http://' + document.domain + ':' + location.port + '/callback/' + 'shou'
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: request_content,
+                    success: success,
+                });
 
                 $('#message').val('').focus()
             })
-        })
 
-        socket.on('rasa-response', function(msg) {
+        var success = function(msg) {
             console.log(msg)
             if (typeof msg !== 'undefined') {
                 $('#response-display').text(msg)
             }
-        })
+        }
     </script>
 </body>
 
