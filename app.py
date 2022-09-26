@@ -29,9 +29,9 @@ def index_page():
     return render_template('index.html')
 
 
-@app.route('/chat')
-def chat_room():
-    return render_template('chat.html')
+@app.route('/chat/<project_name>')
+def chat_room(project_name):
+    return render_template('chat.html', project_name=project_name)
 
 
 # @app.route('/rasa')

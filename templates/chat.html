@@ -132,7 +132,13 @@
                 </div>
 
                 <div class="row" style="padding-left: 70px;">
-                    <img class="float-left" src="../static/SVG/ROBOT1.svg" alt="">
+                    {% if project_name == 'shou' %}
+                        <img class="float-left" src="../static/SVG/ROBOT1.svg" alt="">
+                    {% elif project_name == 'allen' %}
+                        <img class="float-left" src="../static/SVG/ROBOT2.svg" alt="">
+                    {% else %}
+                        <img class="float-left" src="../static/SVG/ROBOT3.svg" alt="">
+                    {% endif %}
                 </div>
             </div>
 
@@ -175,7 +181,7 @@
                 }
                 console.log(request_content)
 
-                url = 'http://' + document.domain + ':' + location.port + '/callback/' + 'shou'
+                url = 'http://' + document.domain + ':' + location.port + '/callback/' + '{{ project_name }}'
                 $.ajax({
                     type: "POST",
                     url: url,

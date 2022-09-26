@@ -90,6 +90,14 @@
             display: inline-block;
             text-align: center;
         }
+        
+        a {
+            color: black;
+        }
+        
+        a:hover {
+            color: black;
+        }
     </style>
 </head>
 
@@ -98,15 +106,23 @@
         <div id="chat-bubbles" class="row">
             <div class="col">
                 <div>
-                    <img src="../static/SVG/TALK.svg" alt="">
-                    <p class='text-centered'>點我詢問有關老人照護中心</p>
+                    <a href="{{ url_for('chat_room', project_name='shou') }}">
+                        <img src="../static/SVG/TALK.svg" alt="">
+                    </a>
+                    <a href="{{ url_for('chat_room', project_name='shou') }}">
+                        <p class='text-centered'>點我詢問有關老人照護中心</p>
+                    </a>
                 </div>
             </div>
 
             <div class="col">
                 <div>
-                    <img src="../static/SVG/TALK.svg" alt="">
-                    <p class='text-centered'>點我詢問XX寵物店</p>
+                    <a href="{{ url_for('chat_room', project_name='allen') }}">
+                        <img src="../static/SVG/TALK.svg" alt="">
+                    </a>
+                    <a href="{{ url_for('chat_room', project_name='allen') }}">
+                        <p class='text-centered'>點我詢問XX寵物店</p>
+                    </a>
                 </div>
             </div>
 
@@ -120,11 +136,15 @@
 
         <div class="row" id="robots">
             <div class="col">
-                <img src="../static/SVG/ROBOT1.svg" align="bottom" alt="">
+                <a href="{{ url_for('chat_room', project_name='shou') }}">
+                    <img src="../static/SVG/ROBOT1.svg" alt="">
+                </a>
             </div>
 
             <div class="col">
-                <img src="../static/SVG/ROBOT2.svg" alt="">
+                <a href="{{ url_for('chat_room', project_name='allen') }}">
+                    <img src="../static/SVG/ROBOT2.svg" alt="">
+                </a>
             </div>
 
             <div class="col">
@@ -148,39 +168,6 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script id="socket-io-script" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.min.js"></script>
-    <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-        socket.on('connect', function() {
-            socket.emit('init-connect', {
-                data: 'User Connected'
-            })
-
-            var form = $('form').on('submit', function(e) {
-                e.preventDefault()
-                    // let user_name = $('input.username').val()
-                let user_name = 'aaa123'
-                let user_input = $('input.message').val()
-
-                socket.emit('rasa', {
-                    project: 'shou',
-                    user_name: user_name,
-                    message: user_input,
-                })
-
-                $('input.message').val('').focus()
-            })
-        })
-
-        socket.on('rasa-response', function(msg) {
-            console.log(msg)
-            if (typeof msg.user_name !== 'undefined') {
-                $('h3').remove()
-                $('div.message_holder').append('<div><b style="color:             #000">' + '機器人' + ':' + msg + '</div>')
-            }
-        })
-    </script>
 </body>
 
 </html>
