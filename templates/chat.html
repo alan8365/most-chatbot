@@ -89,7 +89,7 @@
             transform: translate(-50%, -50%);
             width: 100%;
             padding: 20px;
-            font-size: 30px;
+            font-size: 18px;
             font-weight: 800;
         }
         
@@ -117,6 +117,10 @@
         #robot>.row:last-child {
             height: 70%;
         }
+        
+        #response-display {
+            white-space: pre-line;
+        }
     </style>
 </head>
 
@@ -133,12 +137,9 @@
 
                 <div class="row" style="padding-left: 70px;">
                     {% if project_name == 'shou' %}
-                        <img class="float-left" src="../static/SVG/ROBOT1.svg" alt="">
-                    {% elif project_name == 'allen' %}
-                        <img class="float-left" src="../static/SVG/ROBOT2.svg" alt="">
-                    {% else %}
-                        <img class="float-left" src="../static/SVG/ROBOT3.svg" alt="">
-                    {% endif %}
+                    <img class="float-left" src="../static/SVG/ROBOT1.svg" alt=""> {% elif project_name == 'allen' %}
+                    <img class="float-left" src="../static/SVG/ROBOT2.svg" alt=""> {% else %}
+                    <img class="float-left" src="../static/SVG/ROBOT3.svg" alt=""> {% endif %}
                 </div>
             </div>
 
@@ -170,27 +171,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
         var form = $('form').on('submit', function(e) {
-                e.preventDefault()
-                let user_name = 'aaa123'
-                let user_input = $('#message').val()
+            e.preventDefault()
+            let user_name = 'aaa123'
+            let user_input = $('#message').val()
 
-                request_content = {
-                    project: 'shou',
-                    user_name: user_name,
-                    message: user_input,
-                }
-                console.log(request_content)
+            request_content = {
+                project: 'shou',
+                user_name: user_name,
+                message: user_input,
+            }
+            console.log(request_content)
 
-                url = 'http://' + document.domain + ':' + location.port + '/callback/' + '{{ project_name }}'
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: request_content,
-                    success: success,
-                });
+            url = 'http://' + document.domain + ':' + location.port + '/callback/' + '{{ project_name }}'
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: request_content,
+                success: success,
+            });
 
-                $('#message').val('').focus()
-            })
+            $('#message').val('').focus()
+        })
 
         var success = function(msg) {
             console.log(msg)
