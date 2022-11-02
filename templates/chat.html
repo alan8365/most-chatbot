@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer" />
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <title>Chat-bot</title>
@@ -89,7 +91,7 @@
             transform: translate(-50%, -50%);
             width: 100%;
             padding: 20px;
-            font-size: 18px;
+            font-size: 30px;
             font-weight: 800;
         }
         
@@ -117,10 +119,6 @@
         #robot>.row:last-child {
             height: 70%;
         }
-        
-        #response-display {
-            white-space: pre-line;
-        }
     </style>
 </head>
 
@@ -146,8 +144,11 @@
             <div class="col chat-bubble">
                 <div class="row align-items-center" style="height: 100%;">
                     <div>
-                        <img src="../static/SVG/BOARD.svg" alt="">
-                        <p id='response-display' class='text-centered' style="top: 50%;">問題打對話框</p>
+                        <img src="../static/SVG/BOARD.svg" alt=""> {% if project_name == 'shou' %}
+                        <p id='response-display' class='text-centered' style="top: 50%;">你或你的家人疑似有失智症的徵兆嗎?趕緊在下方詢問你的問題讓我解決你的疑難雜症吧！</p>
+                        {% elif project_name == 'allen' %}
+                        <p id='response-display' class='text-centered' style="top: 50%;">嗨！我是中科大寵物餐廳的聊天機器人，有任何餐廳的問題都可以問我哦～</p>
+                        {% else %} {% endif %}
                     </div>
                 </div>
             </div>
@@ -176,7 +177,7 @@
             let user_input = $('#message').val()
 
             request_content = {
-                project: 'shou',
+                project: '{{ project_name }}',
                 user_name: user_name,
                 message: user_input,
             }
@@ -196,7 +197,12 @@
         var success = function(msg) {
             console.log(msg)
             if (typeof msg !== 'undefined') {
-                $('#response-display').text(msg)
+                if (msg.search('imgur') == -1) {
+                    $('#response-display').text(msg)
+                } else {
+                    $img = $(`<div style="overflow-y: scroll;height: 230px;"><img style="height:759px" src=${msg}></div>`)
+                    $('#response-display').html($img)
+                }
             }
         }
     </script>
